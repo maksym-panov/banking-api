@@ -1,0 +1,7 @@
+spring:
+  flyway:
+    user: user
+    password: secret
+    url: jdbc:postgresql://localhost5442/banking_db
+    schemas: domain, public
+    enabled: true
