@@ -5,3 +5,16 @@ spring:
     url: jdbc:postgresql://localhost5442/banking_db
     schemas: domain, public
     enabled: true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        hikari:
+          jdbcUrl: jdbc:postgresql://localhost5442/banking_db
+          username: user
+          password: secret
+          autocommit: false
+        default_schema: domain
+        show_sql: true
+        format_sql: true
+        highlight_sql: true
