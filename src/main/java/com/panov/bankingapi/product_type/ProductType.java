@@ -1,12 +1,15 @@
 package com.panov.bankingapi.product_type;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.panov.bankingapi.product.Product;
+import com.panov.bankingapi.product.ProductNameComparator;
+import jakarta.persistence.*;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.SortComparator;
+import org.hibernate.annotations.SortNatural;
 
 import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @Entity
 @Table(name = "product_type")
@@ -25,6 +28,25 @@ public class ProductType {
         nullable = false
     )
     private String name;
+
+    @OneToMany(mappedBy = "type")
+    @SortNatural
+    private SortedSet<Product> products =
+            new TreeSet<>(new ProductNameComparator());
+
+    public void addProduct(Product product) {
+        product.setType(this);
+        products.add(product);
+    }
+
+    public void removeProduct(Product product) {
+        product.setType(null);
+        products.remove(product);
+    }
+
+    public SortedSet<Product> getProducts() {
+        return products;
+    }
 
     public String getProductTypeCode() {
         return productTypeCode;

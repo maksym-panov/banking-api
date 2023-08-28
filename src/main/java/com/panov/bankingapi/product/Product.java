@@ -1,11 +1,12 @@
 package com.panov.bankingapi.product;
 
+import com.panov.bankingapi.account.Account;
 import com.panov.bankingapi.product_type.ProductType;
 import jakarta.persistence.*;
-import org.hibernate.annotations.CurrentTimestamp;
-import org.hibernate.generator.EventType;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -13,15 +14,15 @@ import java.util.Objects;
 public class Product {
     @Id
     @Column(
-            name = "product_cd",
-            nullable = false,
-            length = 10
+        name = "product_cd",
+        nullable = false,
+        length = 10
     )
     private String code;
 
     @Column(
-            name = "`name`",
-            nullable = false
+        name = "`name`",
+        nullable = false
     )
     private String name;
 
@@ -30,14 +31,31 @@ public class Product {
     private ProductType type;
 
     @Column(
-            name = "date_offered",
-            nullable = false
+        name = "date_offered",
+        nullable = false
     )
-    @CurrentTimestamp(event = EventType.INSERT)
     private LocalDate offerDate;
 
     @Column(name = "date_retired")
     private LocalDate retireDate;
+
+    @OneToMany(mappedBy = "product")
+    @OrderBy("openDate desc")
+    private List<Account> accounts = new ArrayList<>();
+
+    public void addAccount(Account account) {
+        account.setProduct(this);
+        accounts.add(account);
+    }
+
+    public void removeAccount(Account account) {
+        account.setProduct(null);
+        accounts.remove(account);
+    }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
 
     public String getCode() {
         return code;

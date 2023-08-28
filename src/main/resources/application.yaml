@@ -9,12 +9,16 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+           time_zone: 'UTC'
+        check_nullability: true
         hikari:
           jdbcUrl: jdbc:postgresql://localhost5442/banking_db
           username: user
           password: secret
           autocommit: false
         default_schema: domain
+        preferred_uuid_jdbc_type: 3000
         show_sql: true
         format_sql: true
         highlight_sql: true

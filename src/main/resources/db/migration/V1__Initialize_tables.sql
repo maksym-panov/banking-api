@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS domain.product (
     "name"          VARCHAR(255)    NOT NULL,
     product_type_cd VARCHAR(10)     NOT NULL,
     date_offered    DATE            NOT NULL,
-    date_retired    DATE            NOT NULL
+    date_retired    DATE
 );
 
 ALTER TABLE domain.product
@@ -253,6 +253,7 @@ CREATE TABLE IF NOT EXISTS domain.transaction (
     amount              DECIMAL(19, 2)  NOT NULL,
     description         TEXT,
     teller_emp_id       BIGINT,
+    execution_branch_id BIGINT,
     funds_avail_date    DATE            NOT NULL
 );
 
@@ -272,6 +273,10 @@ FOREIGN KEY (account_id) REFERENCES domain.account;
 ALTER TABLE domain.transaction
 ADD CONSTRAINT transaction_teller_employee_FK
 FOREIGN KEY (teller_emp_id) REFERENCES domain.employee;
+
+ALTER TABLE domain.transaction
+ADD CONSTRAINT transaction_execution_branch_FK
+FOREIGN KEY (execution_branch_id) REFERENCES domain.branch;
 
 ALTER TABLE domain.transaction
 ADD CONSTRAINT transaction_type_allowed_values

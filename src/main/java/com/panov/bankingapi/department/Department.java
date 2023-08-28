@@ -1,9 +1,15 @@
 package com.panov.bankingapi.department;
 
+import com.panov.bankingapi.employee.Employee;
+import com.panov.bankingapi.share.LocalDateDescendingComparator;
 import jakarta.persistence.*;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.SortNatural;
 
+import java.time.LocalDate;
+import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 @Entity
 @Table(name = "department")
@@ -30,6 +36,33 @@ public class Department {
         nullable = false
     )
     private String name;
+
+    @OneToMany(
+        mappedBy = "department",
+        cascade = {
+            CascadeType.DETACH,
+            CascadeType.REFRESH,
+            CascadeType.PERSIST
+        }
+    )
+    @MapKey(name = "startDate")
+    @SortNatural
+    private Map<LocalDate, Employee> employeesRegistry =
+            new TreeMap<>(new LocalDateDescendingComparator());
+
+    public void addEmployee(Employee employee) {
+        employee.setDepartment(this);
+        employeesRegistry.put(employee.getStartDate(), employee);
+    }
+
+    public void removeEmployee(Employee employee) {
+        employee.setDepartment(null);
+        employeesRegistry.remove(employee.getStartDate());
+    }
+
+    public Map<LocalDate, Employee> getEmployeesRegistry() {
+        return employeesRegistry;
+    }
 
     public Long getId() {
         return id;

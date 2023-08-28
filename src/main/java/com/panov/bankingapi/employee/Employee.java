@@ -1,12 +1,19 @@
 package com.panov.bankingapi.employee;
 
+import com.panov.bankingapi.account.Account;
 import com.panov.bankingapi.branch.Branch;
 import com.panov.bankingapi.department.Department;
+import com.panov.bankingapi.transaction.Transaction;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.CurrentTimestamp;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.SourceType;
 import org.hibernate.generator.EventType;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,7 +26,8 @@ public class Employee {
     )
     @SequenceGenerator(
         name = "EmployeeIdSequence",
-        sequenceName = "employee_id_seq"
+        sequenceName = "employee_id_seq",
+        allocationSize = 10
     )
     @Column(
         name = "emp_id",
@@ -52,7 +60,10 @@ public class Employee {
         name = "start_date",
         nullable = false
     )
-    @CurrentTimestamp(event = EventType.INSERT)
+    @Generated(
+            event = EventType.INSERT,
+            sql = "now() at time zone 'utc'"
+    )
     private LocalDate startDate;
 
     @Column(name = "end_date")
@@ -62,6 +73,10 @@ public class Employee {
     @JoinColumn(name = "superior_emp_id")
     private Employee superior;
 
+    @OneToMany(mappedBy = "superior")
+    @OrderBy("lastName asc, firstName asc")
+    private List<Employee> subordinates = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id")
     private Department department;
@@ -69,6 +84,56 @@ public class Employee {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_branch_id")
     private Branch branch;
+
+    @OneToMany(mappedBy = "openEmployee")
+    @OrderBy("openDate desc")
+    private List<Account> openedAccounts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "teller")
+    @OrderBy("transactionTime desc")
+    private List<Transaction> transactions = new ArrayList<>();
+
+    public void addSubordinate(Employee employee) {
+        employee.setSuperior(this);
+        subordinates.add(employee);
+    }
+
+    public void removeSubordinate(Employee employee) {
+        employee.setSuperior(null);
+        subordinates.remove(employee);
+    }
+
+    public void addOpenedAccount(Account account) {
+        account.setOpenEmployee(this);
+        openedAccounts.add(account);
+    }
+
+    public void removeOpenedAccount(Account account) {
+        account.setOpenEmployee(null);
+        openedAccounts.remove(account);
+    }
+
+    public void addTransaction(Transaction transaction) {
+        transaction.setTeller(this);
+        transactions.add(transaction);
+    }
+
+    public void removeTransaction(Transaction transaction) {
+        transaction.setTeller(null);
+        transactions.remove(transaction);
+    }
+
+    public List<Employee> getSubordinates() {
+        return subordinates;
+    }
+
+    public List<Account> getOpenedAccounts() {
+        return openedAccounts;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
 
     public Long getId() {
         return id;
