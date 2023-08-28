@@ -4,7 +4,7 @@ CREATE TABLE domain.branch (
     branch_id   BIGINT          NOT NULL,
     "name"      VARCHAR(255)    NOT NULL,
     region      VARCHAR(63)     NOT NULL,
-    city        VARCHAR(255)    NOT NULL,
+    city        VARCHAR(63)     NOT NULL,
     address     VARCHAR(255)    NOT NULL,
     postal_code CHAR(5)         NOT NULL
 );

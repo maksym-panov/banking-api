@@ -2,6 +2,7 @@ package com.panov.bankingapi.branch;
 
 import com.panov.bankingapi.account.Account;
 import com.panov.bankingapi.employee.Employee;
+import com.panov.bankingapi.share.AddressInfo;
 import com.panov.bankingapi.share.LocalDateDescendingComparator;
 import com.panov.bankingapi.transaction.Transaction;
 import jakarta.persistence.*;
@@ -37,31 +38,8 @@ public class Branch {
     )
     private String name;
 
-    @Column(
-        name = "region",
-        nullable = false,
-        length = 63
-    )
-    private String region;
-
-    @Column(
-        name = "city",
-        nullable = false
-    )
-    private String city;
-
-    @Column(
-        name = "address",
-        nullable = false
-    )
-    private String address;
-
-    @Column(
-        name = "postal_code",
-        nullable = false,
-        length = 5
-    )
-    private String postalCode;
+    @Embedded
+    private AddressInfo addressInfo;
 
     @OneToMany(mappedBy = "openBranch")
     @MapKey(name = "openDate")
@@ -144,36 +122,12 @@ public class Branch {
         this.name = name;
     }
 
-    public String getRegion() {
-        return region;
+    public AddressInfo getAddressInfo() {
+        return addressInfo;
     }
 
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+    public void setAddressInfo(AddressInfo addressInfo) {
+        this.addressInfo = addressInfo;
     }
 
     @Override

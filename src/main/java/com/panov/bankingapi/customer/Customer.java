@@ -1,6 +1,7 @@
 package com.panov.bankingapi.customer;
 
 import com.panov.bankingapi.account.Account;
+import com.panov.bankingapi.share.AddressInfo;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OrderBy;
@@ -29,32 +30,8 @@ public class Customer {
     )
     private UUID id;
 
-    @Column(
-        name = "region",
-        nullable = false,
-        length = 63
-    )
-    private String region;
-
-    @Column(
-        name = "city",
-        nullable = false,
-        length = 63
-    )
-    private String city;
-
-    @Column(
-        name = "address",
-        nullable = false
-    )
-    private String address;
-
-    @Column(
-        name = "postal_code",
-        nullable = false,
-        length = 5
-    )
-    private String postalCode;
+    @Embedded
+    private AddressInfo addressInfo;
 
     @OneToMany(
         mappedBy = "customer",
@@ -86,36 +63,12 @@ public class Customer {
         this.id = id;
     }
 
-    public String getRegion() {
-        return region;
+    public AddressInfo getAddressInfo() {
+        return addressInfo;
     }
 
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+    public void setAddressInfo(AddressInfo addressInfo) {
+        this.addressInfo = addressInfo;
     }
 
     @Override
@@ -129,16 +82,5 @@ public class Customer {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", region='" + region + '\'' +
-                ", city='" + city + '\'' +
-                ", address='" + address + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                '}';
     }
 }
