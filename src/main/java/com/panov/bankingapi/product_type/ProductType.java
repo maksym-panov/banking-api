@@ -19,7 +19,7 @@ public class ProductType {
         nullable = false,
         length = 10
     )
-    private String productTypeCode;
+    private String code;
 
     @NaturalId
     @Column(
@@ -52,12 +52,12 @@ public class ProductType {
         return products;
     }
 
-    public String getProductTypeCode() {
-        return productTypeCode;
+    public String getCode() {
+        return code;
     }
 
-    public void setProductTypeCode(String productTypeCode) {
-        this.productTypeCode = productTypeCode;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {

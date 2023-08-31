@@ -82,13 +82,13 @@ public class ProductTypeTest {
     void gettersAndSettersPerformCorrectly() {
         // given
         ProductType type = new ProductType();
-        String productTypeCode = "TEST_CODE";
+        String code = "TEST_CODE";
         String name = "TEST NAME";
         // when
-        type.setProductTypeCode(productTypeCode);
+        type.setCode(code);
         type.setName(name);
         // then
-        assertThat(type.getProductTypeCode()).isSameAs(productTypeCode);
+        assertThat(type.getCode()).isSameAs(code);
         assertThat(type.getName()).isSameAs(name);
         assertThat(type.getProducts()).isNotNull();
         assertThat(type.getProducts()).hasSize(0);
