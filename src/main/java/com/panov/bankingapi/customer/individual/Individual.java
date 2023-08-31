@@ -84,15 +84,4 @@ public class Individual extends Customer {
     public int hashCode() {
         return Objects.hash(super.hashCode(), taxpayerId);
     }
-
-    @Override
-    public String toString() {
-        return "Individual{" +
-                super.toString() +
-                ", taxpayerId='" + taxpayerId + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthday=" + birthday +
-                '}';
-    }
 }

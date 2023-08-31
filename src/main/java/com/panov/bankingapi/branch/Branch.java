@@ -1,10 +1,8 @@
 package com.panov.bankingapi.branch;
 
-import com.panov.bankingapi.account.Account;
 import com.panov.bankingapi.employee.Employee;
 import com.panov.bankingapi.share.AddressInfo;
 import com.panov.bankingapi.share.LocalDateDescendingComparator;
-import com.panov.bankingapi.transaction.Transaction;
 import jakarta.persistence.*;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.SortNatural;
@@ -41,12 +39,6 @@ public class Branch {
     @Embedded
     private AddressInfo addressInfo;
 
-    @OneToMany(mappedBy = "openBranch")
-    @MapKey(name = "openDate")
-    @SortNatural
-    private Map<LocalDate, Account> accountsRegistry =
-            new TreeMap<>(new LocalDateDescendingComparator());
-
     @OneToMany(
         mappedBy = "branch",
         cascade = {
@@ -60,50 +52,21 @@ public class Branch {
     private Map<LocalDate, Employee> employeesRegistry =
             new TreeMap<>(new LocalDateDescendingComparator());
 
-    @OneToMany(mappedBy = "branch")
-    @OrderBy("transactionTime desc")
-    private List<Transaction> transactions = new ArrayList<>();
-
-    public void addAccount(Account account) {
-        account.setOpenBranch(this);
-        accountsRegistry.put(account.getOpenDate(), account);
-    }
-
-    public void removeAccount(Account account) {
-        account.setOpenBranch(null);
-        accountsRegistry.remove(account.getOpenDate());
-    }
-
     public void addEmployee(Employee employee) {
         employee.setBranch(this);
         employeesRegistry.put(employee.getStartDate(), employee);
     }
 
     public void removeEmployee(Employee employee) {
+        LocalDate date = employee.getStartDate();
+
         employee.setBranch(null);
+        employeesRegistry.get(date).setBranch(null);
         employeesRegistry.remove(employee.getStartDate());
-    }
-
-    public void addTransaction(Transaction transaction) {
-        transaction.setBranch(this);
-        transactions.add(transaction);
-    }
-
-    public void removeTransaction(Transaction transaction) {
-        transaction.setBranch(null);
-        transactions.remove(transaction);
-    }
-
-    public Map<LocalDate, Account> getAccountsRegistry() {
-        return accountsRegistry;
     }
 
     public Map<LocalDate, Employee> getEmployeesRegistry() {
         return employeesRegistry;
-    }
-
-    public List<Transaction> getTransactions() {
-        return transactions;
     }
 
     public Long getId() {

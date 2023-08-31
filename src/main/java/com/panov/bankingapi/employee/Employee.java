@@ -1,14 +1,9 @@
 package com.panov.bankingapi.employee;
 
-import com.panov.bankingapi.account.Account;
 import com.panov.bankingapi.branch.Branch;
 import com.panov.bankingapi.department.Department;
-import com.panov.bankingapi.transaction.Transaction;
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.CurrentTimestamp;
 import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.SourceType;
 import org.hibernate.generator.EventType;
 
 import java.time.LocalDate;
@@ -73,10 +68,6 @@ public class Employee {
     @JoinColumn(name = "superior_emp_id")
     private Employee superior;
 
-    @OneToMany(mappedBy = "superior")
-    @OrderBy("lastName asc, firstName asc")
-    private List<Employee> subordinates = new ArrayList<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id")
     private Department department;
@@ -85,13 +76,9 @@ public class Employee {
     @JoinColumn(name = "assigned_branch_id")
     private Branch branch;
 
-    @OneToMany(mappedBy = "openEmployee")
-    @OrderBy("openDate desc")
-    private List<Account> openedAccounts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "teller")
-    @OrderBy("transactionTime desc")
-    private List<Transaction> transactions = new ArrayList<>();
+    @OneToMany(mappedBy = "superior")
+    @OrderBy("lastName asc, firstName asc")
+    private List<Employee> subordinates = new ArrayList<>();
 
     public void addSubordinate(Employee employee) {
         employee.setSuperior(this);
@@ -99,40 +86,15 @@ public class Employee {
     }
 
     public void removeSubordinate(Employee employee) {
+        int index = subordinates.indexOf(employee);
+
         employee.setSuperior(null);
+        subordinates.get(index).setSuperior(null);
         subordinates.remove(employee);
-    }
-
-    public void addOpenedAccount(Account account) {
-        account.setOpenEmployee(this);
-        openedAccounts.add(account);
-    }
-
-    public void removeOpenedAccount(Account account) {
-        account.setOpenEmployee(null);
-        openedAccounts.remove(account);
-    }
-
-    public void addTransaction(Transaction transaction) {
-        transaction.setTeller(this);
-        transactions.add(transaction);
-    }
-
-    public void removeTransaction(Transaction transaction) {
-        transaction.setTeller(null);
-        transactions.remove(transaction);
     }
 
     public List<Employee> getSubordinates() {
         return subordinates;
-    }
-
-    public List<Account> getOpenedAccounts() {
-        return openedAccounts;
-    }
-
-    public List<Transaction> getTransactions() {
-        return transactions;
     }
 
     public Long getId() {

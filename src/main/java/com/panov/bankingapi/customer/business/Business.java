@@ -48,7 +48,10 @@ public class Business extends Customer {
     }
 
     public void removeOfficer(Officer officer) {
+        int index = officers.indexOf(officer);
+
         officer.setBusiness(null);
+        officers.get(index).setBusiness(null);
         officers.remove(officer);
     }
 
@@ -100,16 +103,5 @@ public class Business extends Customer {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), usreou);
-    }
-
-    @Override
-    public String toString() {
-        return "Business{" +
-                super.toString() +
-                ", usreou='" + usreou + '\'' +
-                ", officialName='" + officialName + '\'' +
-                ", state=" + state +
-                ", incorpDate=" + incorpDate +
-                '}';
     }
 }

@@ -56,8 +56,11 @@ public class Department {
     }
 
     public void removeEmployee(Employee employee) {
+        LocalDate date = employee.getStartDate();
+
         employee.setDepartment(null);
-        employeesRegistry.remove(employee.getStartDate());
+        employeesRegistry.get(date).setDepartment(null);
+        employeesRegistry.remove(date);
     }
 
     public Map<LocalDate, Employee> getEmployeesRegistry() {

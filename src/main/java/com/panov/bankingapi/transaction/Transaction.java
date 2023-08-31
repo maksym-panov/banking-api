@@ -4,13 +4,9 @@ import com.panov.bankingapi.account.Account;
 import com.panov.bankingapi.branch.Branch;
 import com.panov.bankingapi.employee.Employee;
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.CurrentTimestamp;
 import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.SourceType;
 import org.hibernate.generator.EventType;
 
-import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

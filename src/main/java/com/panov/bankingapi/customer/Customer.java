@@ -47,7 +47,10 @@ public class Customer {
     }
 
     public void removeAccount(Account account) {
+        int index = accounts.indexOf(account);
+
         account.setCustomer(null);
+        accounts.get(index).setCustomer(null);
         accounts.remove(account);
     }
 

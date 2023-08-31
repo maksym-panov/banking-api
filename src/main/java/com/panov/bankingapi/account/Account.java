@@ -4,16 +4,17 @@ import com.panov.bankingapi.branch.Branch;
 import com.panov.bankingapi.customer.Customer;
 import com.panov.bankingapi.employee.Employee;
 import com.panov.bankingapi.product.Product;
+import com.panov.bankingapi.share.LocalDateTimeDescendingComparator;
 import com.panov.bankingapi.transaction.Transaction;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.*;
 import org.hibernate.generator.EventType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -40,8 +41,8 @@ public class Account {
         nullable = false
     )
     @Generated(
-            event = EventType.INSERT,
-            sql = "now() at time zone 'utc'"
+        event = EventType.INSERT,
+        sql = "now() at time zone 'utc'"
     )
     private LocalDate openDate;
 
@@ -53,8 +54,8 @@ public class Account {
         nullable = false
     )
     @Generated(
-            event = { EventType.INSERT, EventType.UPDATE },
-            sql = "now() at time zone 'utc'"
+        event = { EventType.INSERT, EventType.UPDATE },
+        sql = "now() at time zone 'utc'"
     )
     private LocalDate lastActivity;
 
@@ -84,8 +85,10 @@ public class Account {
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
-    @OrderBy("transactionTime desc")
-    private List<Transaction> transactions = new ArrayList<>();
+    @MapKey(name = "transactionTime")
+    @SortNatural
+    private Map<LocalDateTime, Transaction> transactionsRegistry =
+            new TreeMap<>(new LocalDateTimeDescendingComparator());
 
     @ManyToOne(
         fetch = FetchType.LAZY,
@@ -117,16 +120,19 @@ public class Account {
 
     public void addTransaction(Transaction transaction) {
         transaction.setAccount(this);
-        transactions.add(transaction);
+        transactionsRegistry.put(transaction.getTransactionTime(), transaction);
     }
 
     public void removeTransaction(Transaction transaction) {
+        LocalDateTime time = transaction.getTransactionTime();
+
         transaction.setAccount(null);
-        transactions.remove(transaction);
+        transactionsRegistry.get(time).setAccount(null);
+        transactionsRegistry.remove(time);
     }
 
-    public List<Transaction> getTransactions() {
-        return transactions;
+    public Map<LocalDateTime, Transaction> getTransactionsRegistry() {
+        return transactionsRegistry;
     }
 
     public Long getId() {

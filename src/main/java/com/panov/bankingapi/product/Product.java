@@ -1,12 +1,9 @@
 package com.panov.bankingapi.product;
 
-import com.panov.bankingapi.account.Account;
 import com.panov.bankingapi.product_type.ProductType;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -38,24 +35,6 @@ public class Product {
 
     @Column(name = "date_retired")
     private LocalDate retireDate;
-
-    @OneToMany(mappedBy = "product")
-    @OrderBy("openDate desc")
-    private List<Account> accounts = new ArrayList<>();
-
-    public void addAccount(Account account) {
-        account.setProduct(this);
-        accounts.add(account);
-    }
-
-    public void removeAccount(Account account) {
-        account.setProduct(null);
-        accounts.remove(account);
-    }
-
-    public List<Account> getAccounts() {
-        return accounts;
-    }
 
     public String getCode() {
         return code;

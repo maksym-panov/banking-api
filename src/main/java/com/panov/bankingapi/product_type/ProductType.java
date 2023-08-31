@@ -4,7 +4,6 @@ import com.panov.bankingapi.product.Product;
 import com.panov.bankingapi.product.ProductNameComparator;
 import jakarta.persistence.*;
 import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.SortComparator;
 import org.hibernate.annotations.SortNatural;
 
 import java.util.Objects;
@@ -41,6 +40,11 @@ public class ProductType {
 
     public void removeProduct(Product product) {
         product.setType(null);
+        products.stream()
+                .filter(p -> Objects.equals(p.getName(), product.getName()))
+                .findFirst()
+                .orElse(product)
+                .setType(null);
         products.remove(product);
     }
 
