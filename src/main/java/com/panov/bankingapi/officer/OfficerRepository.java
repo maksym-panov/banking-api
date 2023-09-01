@@ -44,7 +44,7 @@ public interface OfficerRepository {
     /**
      * Changes data of existing entity in the persistence layer.
      *
-     * @param officer object that contains new data for existing entity.
+     * @param officer object with new data and id of entity to change.
      * @throws IllegalArgumentException if one of required fields of
      * provided object is null or invalid.
      * @return id of updated entity.

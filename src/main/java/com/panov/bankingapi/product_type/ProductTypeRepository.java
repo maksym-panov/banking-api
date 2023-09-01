@@ -49,7 +49,7 @@ public interface ProductTypeRepository {
     /**
      * Changes existing persistent entity with data from provided {@link ProductType} instance.
      *
-     * @param type {@link ProductType} instance with new data.
+     * @param type object with new data and id of entity to change.
      * @throws IllegalArgumentException if code of provided object is null.
      * @return code of updated entity.
      */

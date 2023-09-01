@@ -49,7 +49,7 @@ public interface ProductRepository {
      /**
       * Changes data of provided object in the persistence.
       *
-      * @param product object that contains new object data.
+      * @param product object with new data and id of entity to change.
       * @throws IllegalArgumentException if identity field of provided
       * object if null.
       * @return code of updated entity.
