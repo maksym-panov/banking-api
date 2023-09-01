@@ -33,7 +33,8 @@ public class Department {
     @NaturalId
     @Column(
         name = "`name`",
-        nullable = false
+        nullable = false,
+        unique = true
     )
     private String name;
 

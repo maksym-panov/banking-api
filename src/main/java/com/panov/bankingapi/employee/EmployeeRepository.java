@@ -6,7 +6,7 @@ import com.panov.bankingapi.branch.Branch;
 import com.panov.bankingapi.department.Department;
 
 /**
- * Represents data access layer for {@link Employee} domain entity.
+ * Represents data access layer for {@link Employee} domain entities.
  *
  * @author Maksym Panov
  * @version 1.0
@@ -69,6 +69,7 @@ public interface EmployeeRepository {
      * are present in provided {@link Employee} object.
      *
      * @param employee object with new data and id of entity to change.
+     * @throws IllegalArgumentException if id field of provided object is null.
      * @return id of updated entity.
      */
     Long updateNotNull(Employee employee);
