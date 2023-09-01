@@ -23,7 +23,7 @@ public class Product {
     )
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "product_type_cd")
     private ProductType type;
 

@@ -35,34 +35,30 @@ public interface ProductTypeRepository {
      * @return {@code true} if there is already product type with provided name,
      * {@code false} - otherwise.
      */
-    boolean productWithNameExists(String name);
+    boolean productTypeWithNameExists(String name);
 
     /**
      * Saves provided instance of {@link ProductType} in the persistence layer.
      *
      * @param type object to persist.
-     * @return {@code true} if object was successfully persisted,
-     * {@code false} - if {@code code} property of provided object is {@code null} or
-     * if the object could not be saved.
+     * @throws IllegalArgumentException if code or name of provided object is null.
+     * @return code of saved entity.
      */
-    boolean save(ProductType type);
+    String save(ProductType type);
 
     /**
      * Changes existing persistent entity with data from provided {@link ProductType} instance.
      *
-     * @param type {@link ProductType} instance with new data
-     * @return {@code true} if entity data was successfully changed,
-     * {@code false} - if {@code code} property of provided object is {@code null} or
-     * if the object was not updated.
+     * @param type {@link ProductType} instance with new data.
+     * @throws IllegalArgumentException if code of provided object is null.
+     * @return code of updated entity.
      */
-    boolean update(ProductType type);
+    String update(ProductType type);
 
     /**
      * Removes entity with provided code from the persistence.
      *
      * @param code code of entity, which should be removed.
-     * @return {@code true} if there was database row change (deletion),
-     * {@code false} - otherwise.
      */
-    boolean delete(String code);
+    void delete(String code);
 }
