@@ -35,6 +35,8 @@ public interface OfficerRepository {
      * Persists provided {@link Officer} entity in the persistence layer.
      *
      * @param officer entity to persist.
+     * @throws IllegalArgumentException if one of required fields
+     * of provided object is null or invalid.
      * @return identity of persisted entity.
      */
     Long save(Officer officer);
@@ -43,7 +45,8 @@ public interface OfficerRepository {
      * Changes data of existing entity in the persistence layer.
      *
      * @param officer object that contains new data for existing entity.
-     * @throws IllegalArgumentException if id of provided object is not positive or null.
+     * @throws IllegalArgumentException if one of required fields of
+     * provided object is null or invalid.
      * @return id of updated entity.
      */
     Long update(Officer officer);
