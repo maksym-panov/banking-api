@@ -29,6 +29,18 @@ public class AddressInfo {
     )
     private String postalCode;
 
+    public AddressInfo() {}
+
+    public AddressInfo(
+        String region, String city,
+        String fullAddress, String postalCode
+    ) {
+        this.region = region;
+        this.city = city;
+        this.fullAddress = fullAddress;
+        this.postalCode = postalCode;
+    }
+
     public String getRegion() {
         return region;
     }
