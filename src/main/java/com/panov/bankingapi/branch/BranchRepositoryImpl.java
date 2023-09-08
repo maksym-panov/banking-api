@@ -2,8 +2,8 @@ package com.panov.bankingapi.branch;
 
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.SortedSet;
 
 @Repository
 public class BranchRepositoryImpl implements BranchRepository {
@@ -18,7 +18,7 @@ public class BranchRepositoryImpl implements BranchRepository {
     }
 
     @Override
-    public List<Branch> findAll() {
+    public SortedSet<Branch> findAll() {
         return null;
     }
 

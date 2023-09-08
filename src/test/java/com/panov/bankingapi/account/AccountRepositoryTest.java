@@ -57,6 +57,20 @@ public class AccountRepositoryTest {
     }
 
     @Test
+    @DisplayName("Should set ID to saved entity")
+    void shouldSetIdToSavedEntity() {
+        // given
+        Account account = EntityHelper.randomAccount();
+        // when
+        Long generatedId = underTest.save(account);
+        // then
+        assertThat(account.getId()).isNotNull();
+        assertThat(account.getId()).isEqualTo(generatedId);
+        // clear
+        underTest.delete(generatedId);
+    }
+
+    @Test
     @DisplayName("Should remove existing account by its ID")
     void shouldRemoveExistingAccountByItsId() {
         // given

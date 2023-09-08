@@ -3,6 +3,8 @@ package com.panov.bankingapi.share;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
+import java.util.Objects;
+
 @Embeddable
 public class AddressInfo {
     @Column(
@@ -71,5 +73,21 @@ public class AddressInfo {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AddressInfo that = (AddressInfo) o;
+        return Objects.equals(region, that.region) &&
+                Objects.equals(city, that.city) &&
+                Objects.equals(fullAddress, that.fullAddress) &&
+                Objects.equals(postalCode, that.postalCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(region, city, fullAddress, postalCode);
     }
 }

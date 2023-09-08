@@ -1,7 +1,7 @@
 package com.panov.bankingapi.branch;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.SortedSet;
 
 /**
  * Represents data access layer for {@link Branch} domain entities.
@@ -32,11 +32,12 @@ public interface BranchRepository {
 
     /**
      * Retrieves all existing {@link Branch} entities from
-     * the persistence layer.
+     * the persistence layer. By default, retrieved entities
+     * are sorted by their names in ascending order.
      *
-      * @return list of found {@link Branch}es.
+      * @return sorted set of found {@link Branch}es.
      */
-    List<Branch> findAll();
+    SortedSet<Branch> findAll();
 
     /**
      * Persists provided {@link Branch} object to the persistence
